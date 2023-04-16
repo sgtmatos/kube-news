@@ -15,7 +15,7 @@ pipeline {
              steps {
                  script {
                      docker.withRegistry('https://registry.hub.docker.com', 'login.docker') {
-                         dockerapp.push('latest')
+                         //dockerapp.push('latest')
                          dockerapp.push("${env.BUILD_ID}")
                      }
                  }
@@ -23,17 +23,17 @@ pipeline {
          }
 
 
-        // stage ('Deploy Kubernetes') {
-        //     environment {
-        //         tag_version = "${env.BUILD_ID}"
-        //     }
-        //     steps {
-        //         withKubeConfig ([credentialsId: 'kubeconfig']) {
-        //             sh 'sed -i "s/{{TAG}}/$tag_version/g" ./k8s/deployment.yaml'
-        //             sh 'kubectl apply -f ./k8s/deployment.yaml'
-        //         }
-        //     }
-        // }
+         stage ('Deploy Kubernetes') {
+             environment {
+                tag_version = "${env.BUILD_ID}"
+             }
+             steps {
+                 withKubeConfig ([credentialsId: 'doc.kubeconfig']) {
+                     sh 'sed -i "s/{{TAG}}/$tag_version/g" ./k8s/deployment.yaml'
+                     sh 'kubectl apply -f ./k8s/deployment.yaml'
+                 }
+             }
+         }
     }
 
 }

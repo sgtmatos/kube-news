@@ -22,7 +22,7 @@ spec:
           - name: POSTGRES_USER
             value: "kubenews"
           - name: POSTGRES_PASSWORD
-            value: "Pg#123"  
+            value: "Pg#123"
 
 ---
 
@@ -31,7 +31,7 @@ kind: Service
 metadata:
   name: postgre
 spec:
-  selector: 
+  selector:
     app: postgre
   ports:
     - port: 5432
@@ -44,7 +44,7 @@ kind: Deployment
 metadata:
   name: web
 spec:
-  replicas: 10
+  replicas: 3
   selector:
     matchLabels:
       app: web
@@ -59,7 +59,8 @@ spec:
     spec:
       containers:
         - name: web
-          image: fabricioveronez/kube-news:{{TAG}}
+          #image: fabricioveronez/kube-news:{{TAG}}
+          image: armtsandre/kube-news::{{TAG}}
           ports:
           - containerPort: 8080
           env:
@@ -68,16 +69,16 @@ spec:
           - name: DB_USERNAME
             value: "kubenews"
           - name: DB_PASSWORD
-            value: "Pg#123" 
+            value: "Pg#123"
           - name: DB_HOST
-            value: "postgre"  
+            value: "postgre"
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: web
 spec:
-  selector: 
+  selector:
     app: web
   ports:
     - port: 80
