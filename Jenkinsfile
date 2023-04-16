@@ -6,7 +6,7 @@ pipeline {
         stage ('Build Docker Image') {
             steps {
                 script {
-                    dockerapp = docker.build("sgtmatos/kube-news:${env.BUILD_ID}", '-f ./src/Dockerfile ./src')
+                    dockerapp = docker.build("armtsandre/kube-news:${env.BUILD_ID}", '-f ./src/Dockerfile ./src')
                 }
             }
         }
